@@ -1,124 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Special Question ❤️</title>
-
-<style>
-    body{
-        margin:0;
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-        font-family:Arial, sans-serif;
-        overflow:hidden;
-    }
-
-    .container{
-        text-align:center;
-        background:white;
-        padding:40px;
-        border-radius:20px;
-        box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    h1{
-        color:#ff4d6d;
-        margin-bottom:20px;
-    }
-
-    p{
-        font-size:20px;
-        color:#555;
-    }
-
-    button{
-        padding:12px 30px;
-        font-size:18px;
-        border:none;
-        border-radius:30px;
-        cursor:pointer;
-        transition:0.2s;
-    }
-
-    #yesBtn{
-        background:#ff4d6d;
-        color:white;
-        margin-right:20px;
-    }
-
-    #yesBtn:hover{
-        transform:scale(1.1);
-    }
-
-    #noBtn{
-        background:#888;
-        color:white;
-        position:absolute;
-    }
-
-    #message{
-        display:none;
-        font-size:28px;
-        color:#ff4d6d;
-        margin-top:20px;
-        font-weight:bold;
-    }
-</style>
-</head>
-<body>
-
-<div class="container">
-    <h1>❤️ Hey Beautiful ❤️</h1>
-    <p>Would you like to go on a date with me? 🌹</p>
-
-    <button id="yesBtn">Yes ❤️</button>
-    <button id="noBtn">No 😢</button>
-
-    <div id="message">
-        🎉 YAY! I can't wait! ❤️🌹
-    </div>
-</div>
-
 <script>
 const noBtn = document.getElementById("noBtn");
 
 noBtn.style.left = "55%";
 noBtn.style.top = "55%";
 
-document.addEventListener("mousemove", function() {
+document.addEventListener("mousemove", function(event) {
     const maxX = window.innerWidth - noBtn.offsetWidth;
     const maxY = window.innerHeight - noBtn.offsetHeight;
 
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
-
     const rect = noBtn.getBoundingClientRect();
 
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
-
     const distance = Math.sqrt(
-        Math.pow(mouseX - (rect.left + rect.width/2), 2) +
-        Math.pow(mouseY - (rect.top + rect.height/2), 2)
+        Math.pow(event.clientX - (rect.left + rect.width / 2), 2) +
+        Math.pow(event.clientY - (rect.top + rect.height / 2), 2)
     );
 
-    if(distance < 120){
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
+    if (distance < 120) {
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
     }
 });
 
-document.getElementById("yesBtn").addEventListener("click", function(){
-    document.querySelector("p").style.display = "none";
+document.getElementById("yesBtn").addEventListener("click", function() {
+
+    document.querySelector("p").innerHTML = `
+        <h2>❤️ Yay! Pick a date for our date ❤️</h2>
+        <input type="date" id="datePicker" style="
+            padding:10px;
+            font-size:18px;
+            border-radius:10px;
+            border:2px solid pink;
+        ">
+        <br><br>
+        <button onclick="confirmDate()" style="
+            padding:10px 25px;
+            font-size:18px;
+            background:#ff4d6d;
+            color:white;
+            border:none;
+            border-radius:20px;
+        ">
+            Confirm ❤️
+        </button>
+    `;
+
     document.getElementById("yesBtn").style.display = "none";
     document.getElementById("noBtn").style.display = "none";
-    document.getElementById("message").style.display = "block";
 });
-</script>
 
-</body>
-</html>
+function confirmDate() {
+    const date = document.getElementById("datePicker").value;
+
+    if (!date) {
+        alert("Please choose a date ❤️");
+        return;
+    }
+
+    document.querySelector("p").innerHTML = `
+        <h2>🎉 It's a date! 🎉</h2>
+        <p>I'm looking forward to seeing you on <b>${date}</b> ❤️🌹</p>
+    `;
+}
+</script>
